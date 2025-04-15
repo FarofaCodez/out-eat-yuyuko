@@ -30,10 +30,10 @@
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="..\..\..\..\Documents\yuyuko.bmp">
+    <Image Include="yuyuko.bmp">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="..\..\..\..\Documents\rumia.bmp">
+    <Image Include="rumia.bmp">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>
