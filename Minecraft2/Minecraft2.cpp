@@ -11,6 +11,7 @@ HBITMAP yuyuko = NULL;
 HINSTANCE hInst_g = NULL;
 int score = 0;
 int yuyuScore = 0;
+bool gameEnded = false;
 
 int WinMain(_In_ HINSTANCE hInst, _In_opt_ HINSTANCE hPrevInst, _In_ LPSTR lpCmdLine, _In_ int nShowCmd) {
 	WNDCLASS wndClass = {};
@@ -89,7 +90,7 @@ LRESULT wndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 	case WM_CREATE:
 		yuyuko = LoadBitmap(hInst_g, MAKEINTRESOURCE(IDB_IMAGE1));
 		rumia = LoadBitmap(hInst_g, MAKEINTRESOURCE(IDB_IMAGE2));
-		SetTimer(hWnd, 0, 500, NULL);
+		SetTimer(hWnd, 1, 500, (TIMERPROC)NULL);
 
 		break;
 
@@ -99,8 +100,6 @@ LRESULT wndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 
 		drawBitmap(hdc, rumia, 50, 200);
 		drawBitmap(hdc, yuyuko, 800, 200);
-
-
 
 		EndPaint(hWnd, &ps);
 
@@ -118,10 +117,21 @@ LRESULT wndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 		break;
 
 	case WM_TIMER:
+		if (gameEnded) break;
 		yuyuScore += 5;
 		char text[300] = "Out-Eat Yuyuko";
 		sprintf_s(text, "Out-Eat Yuyuko -- You: %d, Yuyuko: %d", score, yuyuScore);
 		SetWindowText(hWnd, text);
+		if (score >= 1000) {
+			gameEnded = true;
+			MessageBox(hWnd, "You won!", "Message", MB_OK);
+			PostQuitMessage(0);
+		}
+		if (yuyuScore >= 1000) {
+			gameEnded = true;
+			MessageBox(hWnd, "You lose!", "Message", MB_OK);
+			PostQuitMessage(0);
+		}
 	}
 
 	return ::DefWindowProc(hWnd, uMsg, wParam, lParam);
