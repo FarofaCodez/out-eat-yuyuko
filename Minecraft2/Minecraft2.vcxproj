@@ -139,6 +139,8 @@
   <ItemGroup>
     <Image Include="..\..\..\..\Documents\rumia.bmp" />
     <Image Include="..\..\..\..\Documents\yuyuko.bmp" />
+    <Image Include="rumia.bmp" />
+    <Image Include="yuyuko.bmp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
