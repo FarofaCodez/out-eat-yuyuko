@@ -1,19 +1,28 @@
 #include <iostream>
 #include <Windows.h>
+#include <mmsystem.h>
 #pragma comment(lib, "comctl32.lib")
+#pragma comment(lib, "winmm.lib")
 #include <commctrl.h>
 #define IDB_IMAGE1 101
 #define IDB_IMAGE2 102
+#define IDB_IMAGE3 103
+#define IDR_WAVE1 106
 
 LRESULT wndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 HBITMAP rumia = NULL;
 HBITMAP yuyuko = NULL;
+HBITMAP explosion = NULL;
 HINSTANCE hInst_g = NULL;
 int score = 0;
 int yuyuScore = 0;
 bool gameEnded = false;
+bool exploded = false;
+using namespace std;
+HWND eatBtn = NULL;
 
 int WinMain(_In_ HINSTANCE hInst, _In_opt_ HINSTANCE hPrevInst, _In_ LPSTR lpCmdLine, _In_ int nShowCmd) {
+	srand(static_cast<unsigned int>(time(nullptr)));
 	WNDCLASS wndClass = {};
 	wndClass.lpfnWndProc = wndProc;
 	wndClass.cbClsExtra = 0;
@@ -44,7 +53,7 @@ int WinMain(_In_ HINSTANCE hInst, _In_opt_ HINSTANCE hPrevInst, _In_ LPSTR lpCmd
 
 	InitCommonControlsEx(&commonInit);
 
-	HWND eatBtn = CreateWindowEx(
+	eatBtn = CreateWindowEx(
 		0,
 		"BUTTON",
 		"Eat",
@@ -90,6 +99,7 @@ LRESULT wndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 	case WM_CREATE:
 		yuyuko = LoadBitmap(hInst_g, MAKEINTRESOURCE(IDB_IMAGE1));
 		rumia = LoadBitmap(hInst_g, MAKEINTRESOURCE(IDB_IMAGE2));
+		explosion = LoadBitmap(hInst_g, MAKEINTRESOURCE(IDB_IMAGE3));
 		SetTimer(hWnd, 1, 500, (TIMERPROC)NULL);
 
 		break;
@@ -101,6 +111,10 @@ LRESULT wndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 		drawBitmap(hdc, rumia, 50, 200);
 		drawBitmap(hdc, yuyuko, 800, 200);
 
+		if (exploded) {
+			drawBitmap(hdc, explosion, 50, 200);
+		}
+
 		EndPaint(hWnd, &ps);
 
 		break;
@@ -109,6 +123,14 @@ LRESULT wndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 	case WM_COMMAND:
 		if (wParam == 1) {
 			score += 2;
+			int willExplode = rand();
+			if (willExplode > 32700) { //32700
+				exploded = true;
+				RedrawWindow(hWnd, NULL, NULL, RDW_INVALIDATE);
+				PlaySound(MAKEINTRESOURCE(IDR_WAVE1), hInst_g, SND_ASYNC | SND_NODEFAULT | SND_RESOURCE);
+				CloseWindow(eatBtn);
+				gameEnded = true;
+			}
 		}
 
 	case WM_DESTROY:

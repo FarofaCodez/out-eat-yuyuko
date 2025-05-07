@@ -36,5 +36,13 @@
     <Image Include="rumia.bmp">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="explosion.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <Media Include="die.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
   </ItemGroup>
 </Project>

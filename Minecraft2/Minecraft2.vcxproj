@@ -137,8 +137,12 @@
     <ResourceCompile Include="Minecraft2.rc" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="explosion.bmp" />
     <Image Include="rumia.bmp" />
     <Image Include="yuyuko.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Media Include="die.wav" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
