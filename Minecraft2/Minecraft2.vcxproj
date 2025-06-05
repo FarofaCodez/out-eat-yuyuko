@@ -128,9 +128,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="drawBitmap.cpp" />
     <ClCompile Include="Minecraft2.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="drawBitmap.h" />
     <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>

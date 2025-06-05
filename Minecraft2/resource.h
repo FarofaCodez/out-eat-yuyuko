@@ -2,10 +2,10 @@
 // Microsoft Visual C++ generated include file.
 // Used by Minecraft2.rc
 //
-#define IDB_BITMAP1                     101
-#define IDB_BITMAP2                     102
-#define IDB_BITMAP3                     103
-#define IDB_BITMAP4                     105
+#define IDB_IMAGE1                      101
+#define IDB_IMAGE2                      102
+#define IDB_IMAGE3                      103
+#define IDB_IMAGE4                      105
 #define IDR_WAVE1                       106
 
 // Next default values for new objects
