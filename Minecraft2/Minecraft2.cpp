@@ -128,7 +128,7 @@ LRESULT wndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 				exploded = true;
 				RedrawWindow(hWnd, NULL, NULL, RDW_INVALIDATE);
 				PlaySound(MAKEINTRESOURCE(IDR_WAVE1), hInst_g, SND_ASYNC | SND_NODEFAULT | SND_RESOURCE);
-				CloseWindow(eatBtn);
+				DestroyWindow(eatBtn);
 				gameEnded = true;
 			}
 		}
@@ -146,13 +146,11 @@ LRESULT wndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 		SetWindowText(hWnd, text);
 		if (score >= 1000) {
 			gameEnded = true;
-			MessageBox(hWnd, "You won!", "Message", MB_OK);
-			PostQuitMessage(0);
+			SetWindowText(hWnd, "You won!");
 		}
 		if (yuyuScore >= 1000) {
 			gameEnded = true;
-			MessageBox(hWnd, "You lose!", "Message", MB_OK);
-			PostQuitMessage(0);
+			SetWindowText(hWnd, "You lost!");
 		}
 	}
 
