@@ -1,6 +1,5 @@
 #include <iostream>
 #include <Windows.h>
-#include <mmsystem.h>
 #pragma comment(lib, "comctl32.lib")
 #pragma comment(lib, "winmm.lib")
 #include <commctrl.h>
@@ -18,8 +17,14 @@ bool gameEnded = false;
 bool exploded = false;
 using namespace std;
 HWND eatBtn = NULL;
+PAINTSTRUCT ps;
+HDC hdc;
+bool explosionEnabled = false;
 
 int WinMain(_In_ HINSTANCE hInst, _In_opt_ HINSTANCE hPrevInst, _In_ LPSTR lpCmdLine, _In_ int nShowCmd) {
+	if (lpCmdLine == "--explode") {
+		explosionEnabled = true;
+	}
 	srand(static_cast<unsigned int>(time(nullptr)));
 	WNDCLASS wndClass = {};
 	wndClass.lpfnWndProc = wndProc;
@@ -86,9 +91,8 @@ LRESULT wndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 
 		break;
 
-	case WM_PAINT:{
-		PAINTSTRUCT ps;
-		HDC hdc = BeginPaint(hWnd, &ps);
+	case WM_PAINT:
+		hdc = BeginPaint(hWnd, &ps);
 
 		drawBitmap(hdc, rumia, 50, 200);
 		drawBitmap(hdc, yuyuko, 800, 200);
@@ -98,18 +102,19 @@ LRESULT wndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 
 		EndPaint(hWnd, &ps);
 		break;
-	}
 	
 	case WM_COMMAND:
 		if (wParam == 1) {
 			score += 2;
-			int willExplode = rand();
-			if (willExplode > 32700) { //32700
-				exploded = true;
-				RedrawWindow(hWnd, NULL, NULL, RDW_INVALIDATE);
-				PlaySound(MAKEINTRESOURCE(IDR_WAVE1), hInst_g, SND_ASYNC | SND_NODEFAULT | SND_RESOURCE);
-				DestroyWindow(eatBtn);
-				gameEnded = true;
+			if (explosionEnabled) {
+				int willExplode = rand();
+				if (willExplode > 32700) { //32700
+					exploded = true;
+					RedrawWindow(hWnd, NULL, NULL, RDW_INVALIDATE);
+					PlaySound(MAKEINTRESOURCE(IDR_WAVE1), hInst_g, SND_ASYNC | SND_NODEFAULT | SND_RESOURCE);
+					DestroyWindow(eatBtn);
+					gameEnded = true;
+				}
 			}
 		}
 
